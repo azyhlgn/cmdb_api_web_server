@@ -47,7 +47,7 @@ class Server(models.Model):
 
     # dmidecode -t1 命令可以查看到
     sn = models.CharField('主板SN号', max_length=64, db_index=True)
-    manufacture = models.CharField(verbose_name='主板制造商', max_length=64, null=True, blank=True, )
+    manufacturer = models.CharField(verbose_name='主板制造商', max_length=64, null=True, blank=True, )
     model = models.CharField('主板型号', max_length=64, null=True, blank=True, )
     # cat /proc/cpuinfo 命令收集查看
     cpu_count = models.IntegerField('CPU个数', null=True, blank=True, )
@@ -67,8 +67,8 @@ class Server(models.Model):
 class Disk(models.Model):
     # 硬盘信息  MegaCli -PDList -aAll 命令有点问题 之后在看 中控机有一个shell脚本可以生成同格式的结果
     slot = models.CharField('硬盘槽位', max_length=8)
-    model = models.CharField('硬盘型号', max_length=32)
-    capacity = models.CharField('硬盘容量GB', null=True, blank=True)
+    model = models.CharField('硬盘型号', max_length=128)
+    capacity = models.CharField('硬盘容量GB', null=True, blank=True,max_length=32)
     pd_type = models.CharField('硬盘类型', max_length=32)
 
     server = models.ForeignKey(verbose_name='服务器', to='Server', related_name='disk', on_delete=models.CASCADE)
@@ -83,9 +83,9 @@ class Disk(models.Model):
 class NIC(models.Model):
     # 网卡    ip -o link show    ip -o addr show  查看
     name = models.CharField('网卡名称', max_length=128)
-    hwaddr = models.CharField('网卡mac名称', max_length=64)
+    hwaddr = models.CharField('网卡mac名称', max_length=64,null=True, blank=True)
     ipaddrs_netmask = models.CharField('网卡ip地址和子网掩码', max_length=256)
-    up = models.BooleanField('网卡状态',default=False)
+    up = models.CharField('网卡状态',default=False,max_length=32)
     server = models.ForeignKey('Server', related_name='nic_list', on_delete=models.CASCADE)
 
     class Meta:
@@ -98,9 +98,9 @@ class NIC(models.Model):
 class Memory(models.Model):
     # 内存信息  dmidecode -q -t 17 2>/dev/null 命令查看
     slot = models.CharField('内存槽位', max_length=32)
-    manufacture = models.CharField(verbose_name='内存制造商', max_length=32, null=True, blank=True, )
+    manufacturer = models.CharField(verbose_name='内存制造商', max_length=32, null=True, blank=True, )
     model = models.CharField('内存型号', max_length=64)
-    capacity = models.CharField('内存容量GB', null=True, blank=True, )
+    capacity = models.CharField('内存容量GB', null=True, blank=True, max_length=32)
     sn = models.CharField('内存SN号', max_length=64, db_index=True)
     speed = models.CharField('内存速度', max_length=16, null=True, blank=True, )
 
