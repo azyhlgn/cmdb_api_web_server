@@ -28,8 +28,7 @@ class Asset(APIView):
                 server = models.Server.objects.filter(**value['data'])
                 if not server:
                     print('sever新增')
-                    models.Server.objects.create(**value['data'])
-                    server = models.Server.objects.filter(**value['data'])
+                    server = models.Server.objects.create(**value['data'])
             if key == 'MainBoard':
                 server.update(**value['data'])
             if key == 'Cpu':

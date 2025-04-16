@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <!-- 统计卡片 -->
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card stat-card bg-primary text-white shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">总资产数</h5>
+                        <h2 class="mb-0">1,234</h2>
+                        <i class="fas fa-cube fa-3x float-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card stat-card bg-success text-white shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">在线设备</h5>
+                        <h2 class="mb-0">1,024</h2>
+                        <i class="fas fa-check-circle fa-3x float-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card stat-card bg-warning text-white shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">维护设备</h5>
+                        <h2 class="mb-0">56</h2>
+                        <i class="fas fa-tools fa-3x float-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card stat-card bg-danger text-white shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">故障设备</h5>
+                        <h2 class="mb-0">12</h2>
+                        <i class="fas fa-exclamation-triangle fa-3x float-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 资产分布图表 -->
+        <div class="card shadow mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">资产类型分布</h5>
+            </div>
+            <div class="card-body">
+                <div id="assetChart" style="height: 300px;"></div>
+            </div>
+        </div>
+        <!-- 最近更新 -->
+        <div class="card shadow">
+            <div class="card-header">
+                <h5 class="mb-0">最近更新记录</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex justify-content-between">
+                            <div>Web服务器-01 IP更新</div>
+                            <small>3分钟前</small>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex justify-content-between">
+                            <div>核心交换机配置变更</div>
+                            <small>2小时前</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+{% endblock %}

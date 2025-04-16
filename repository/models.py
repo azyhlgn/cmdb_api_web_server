@@ -71,7 +71,7 @@ class Disk(models.Model):
     capacity = models.CharField('硬盘容量GB', null=True, blank=True,max_length=32)
     pd_type = models.CharField('硬盘类型', max_length=32)
 
-    server = models.ForeignKey(verbose_name='服务器', to='Server', related_name='disk', on_delete=models.CASCADE)
+    server = models.ForeignKey(verbose_name='服务器', to='Server', related_name='disk_list', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '硬盘表'
@@ -115,7 +115,7 @@ class Memory(models.Model):
 
 class Asset(models.Model):
     # 资产变更记录 creator为空表示是资产汇报的数据
-    server = models.ForeignKey('Server', related_name='servers', on_delete=models.CASCADE)
+    server = models.ForeignKey('Server', related_name='asset_change_list', on_delete=models.CASCADE)
     content = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
