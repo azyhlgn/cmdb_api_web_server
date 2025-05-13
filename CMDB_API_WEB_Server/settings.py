@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'API.apps.ApiConfig',
     'repository.apps.RepositoryConfig',
+    'stark.apps.StarkConfig',
+    'stark.templatetags',
 
     'rest_framework',
 ]

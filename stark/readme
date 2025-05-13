@@ -1,0 +1,25 @@
+组件使用步骤
+
+1. 复制stark组件到目标项目中
+2. 在目标项目中注册stark app 包括StarkConfig和Stark.templatetags
+    INSTALLED_APPS = [
+    '......',
+    'stark.apps.StarkConfig',
+    'stark.templatetags',
+]
+3. 配置路由信息
+    from stark.service import stark
+
+    urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('stark/', stark.site.urls),
+]
+
+
+4. 在目标模块的根目录创建stark.py文件
+5. 导入stark.site
+    from stark.service.stark import site
+6. 注册想要添加的model
+    site.register(models.Server, ServerConfig)
+7. 未传入自定义config就会默认显示model的所有字段
+8. 想要自定义changelist页面显示 可以自定义config并传入site.register()

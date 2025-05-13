@@ -28,13 +28,15 @@ class Asset(APIView):
                 server = models.Server.objects.filter(**value['data'])
                 if not server:
                     print('sever新增')
-                    server = models.Server.objects.create(**value['data'])
+                    new_data = models.Server.objects.create(**value['data'])
+                    # 使下文中update可以正常运行
+                    server = models.Server.objects.filter(id=new_data.id)
             if key == 'MainBoard':
                 server.update(**value['data'])
             if key == 'Cpu':
                 server.update(**value['data'])
             if key == 'Memory' or key == 'Disk':
-                my_saver.save(server, value['data'], key,'slot')
+                my_saver.save(server, value['data'], key, 'slot')
             if key == 'NIC':
                 my_saver.save(server, value['data'], key, 'name')
 

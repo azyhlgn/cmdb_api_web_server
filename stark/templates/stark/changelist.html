@@ -1,0 +1,61 @@
+{% extends 'stark/layout.html' %}
+{% load stark_tags %}
+
+{% block content %}
+    <div>
+        {# 组合搜索 placeholder #}
+        {% for field_value_list in vo.combinatorial_search_field_data %}
+            {% for field_value in field_value_list %}
+                {{ field_value|safe }}
+            {% endfor %}
+        {% endfor %}
+
+
+        {# 新增按钮判断 #}
+        {% if vo.add_btn_obj %}
+            {{ vo.add_btn_obj }}
+        {% endif %}
+        {# 关键字搜索功能 #}
+        {% if vo.search_field_list %}
+            <div style="float: right">
+                <form method="GET" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" name="q" class="form-control" value="{{ vo.q }}"
+                               placeholder="请输入关键字">
+                        <input type="submit" class="btn btn-primary" value="搜索">
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+
+        <form method="post" class="form-inline" style="width: 100%">
+            {% csrf_token %}
+
+            {# 批量操作功能 #}
+            {% if vo.multi_action_list %}
+                <div style="margin-left: auto">
+                    <div class="form-group">
+                        <select name="action" class="form-control" style="min-width: 200px;">
+                            <option>请选择功能</option>
+                            {% for dict in vo.multi_action_list %}
+                                <option value="{{ dict.func_name }}">{{ dict.func_text }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" class="btn btn-primary" value="执行">
+                    </div>
+                </div>
+            {% endif %}
+
+            {# 数据表 #}
+            {% table vo %}
+
+        </form>
+    </div>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            {{ vo.page.page_html|safe }}
+        </ul>
+    </nav>
+
+{% endblock %}

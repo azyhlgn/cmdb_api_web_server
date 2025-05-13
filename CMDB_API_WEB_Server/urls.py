@@ -16,9 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from stark.service import stark
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(('API.urls','api'), namespace='api')),
-    path('web/', include(('WEB.urls','web'), namespace='web')),
+    path('stark/', stark.site.urls),
+
+
+    path('api/', include(('API.urls', 'api'), namespace='api')),
+    path('web/', include(('WEB.urls', 'web'), namespace='web')),
 ]

@@ -1,0 +1,18 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        {% for head in head_list %}
+            <th>{{ head }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for data_row in data_list %}
+        <tr>
+            {% for data in data_row %}
+                <td>{{ data }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

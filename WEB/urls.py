@@ -16,5 +16,4 @@ urlpatterns = [
     re_path('server/delete/(?P<pk>\d+)/', views.server_delete, name='server_delete'),
     re_path('server/detail/(?P<pk>\d+)/', views.server_detail, name='server_detail'),
     re_path('server/asset_change_list/(?P<pk>\d+)/', views.server_asset_change_list, name='server_asset_change_list'),
-
 ]

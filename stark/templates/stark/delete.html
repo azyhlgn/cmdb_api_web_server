@@ -1,0 +1,13 @@
+{% extends 'stark/layout.html' %}
+
+{% block content %}
+    <form action="" method="post" style="margin-top: 30px" novalidate>
+        {% csrf_token %}
+        <h1>确定要删除数据{{ pk }}吗？</h1>
+        <h1>删除后将无法找回！</h1>
+        <div class="form-group">
+            <button style="margin-left: 15px" type="submit" class="btn btn-danger">确认！</button>
+            <a style="margin-left: 15px" href="{{ cancel_url }}" class="btn btn-success">取消</a>
+        </div>
+    </form>
+{% endblock %}

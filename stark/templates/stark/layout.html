@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CMDB 资产管理</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .sidebar {
+            height: 100vh;
+            background: #2c3e50;
+            color: #fff;
+            position: fixed;
+            left: 0;
+            width: 250px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: #1a252f;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .sidebar-menu a {
+            color: #b7c0cd;
+            padding: 12px 20px;
+            display: block;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .sidebar-menu a:hover {
+            background: #34495e;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        .stat-card {
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        {% block css %}{% endblock %}
+    </style>
+</head>
+<body>
+<!-- 侧边栏 -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h3 class="mb-0">CMDB</h3>
+        <small>资产管理系统</small>
+    </div>
+    <nav class="sidebar-menu">
+        <a href="/web/index/" class="active">
+            <i class="fas fa-home mr-2"></i>仪表盘
+        </a>
+        <a href="/web/businessunit">
+            <i class="fas fa-server mr-2"></i>业务线
+        </a>
+        <a href="/web/idc">
+            <i class="fas fa-server mr-2"></i>机房数据
+        </a>
+        <a href="/web/server/">
+            <i class="fas fa-server mr-2"></i>服务器资产
+        </a>
+
+        <a href="#">
+            <i class="fas fa-network-wired mr-2"></i>网络设备
+        </a>
+        <a href="#">
+            <i class="fas fa-database mr-2"></i>存储设备
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href="#">
+            <i class="fas fa-plus-circle mr-2"></i>新增资产
+        </a>
+        <a href="#">
+            <i class="fas fa-cog mr-2"></i>系统设置
+        </a>
+    </nav>
+</div>
+
+<!-- 主内容区 -->
+<div class="main-content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Bootstrap 4 依赖 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>

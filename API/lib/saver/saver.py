@@ -1,3 +1,5 @@
+import json
+
 from repository import models
 
 
@@ -9,6 +11,7 @@ class Saver(object):
         # model_name 为了反射实现工厂模式 兼容三种保存
         # search_name 为了在数据库查询时 作为拟造查询条件传入 用于兼容 slot_in 和 name_in 两种查询
         print('进入save')
+        print(json.dumps(data))
         model = getattr(models, model_name)
         old_data = model.objects.filter(server=server.first())
         new_data_set = set(data.keys())
@@ -18,7 +21,7 @@ class Saver(object):
         asset_change_log = {}
         # 资产变更表中需要有的字段
         asset_change_fields = model._meta.get_fields()
-        asset_change_fields = {field.name:field.verbose_name for field in asset_change_fields if
+        asset_change_fields = {field.name: field.verbose_name for field in asset_change_fields if
                                field.name not in ('id', 'server')}
         print(asset_change_fields.items())
 
@@ -71,7 +74,7 @@ class Saver(object):
                 # 用于记录单个资产变更的字典
                 add_obj_dict = {}
                 for key, value in asset_change_fields.items():
-                    add_obj_dict[key] = getattr(obj, value)
+                    add_obj_dict[key] = getattr(obj, key)
 
                 add_content_dict[index] = add_obj_dict
                 add_model_obj_list.append(obj)
@@ -80,7 +83,7 @@ class Saver(object):
 
         print(asset_change_log)
         if len(asset_change_log) > 0:
-            models.Asset.objects.create(server=server.first(),content=asset_change_log)
+            models.Asset.objects.create(server=server.first(), content=asset_change_log)
 
 
 my_saver = Saver()
