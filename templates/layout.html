@@ -1,0 +1,180 @@
+{% load rbac_tags %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>CMDB 资产管理</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .sidebar {
+            height: 100vh;
+            background: #2c3e50;
+            color: #fff;
+            position: fixed;
+            left: 0;
+            width: 250px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: #1a252f;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .sidebar-menu a {
+            color: #b7c0cd;
+            padding: 12px 20px;
+            display: block;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .sidebar-menu a:hover {
+            background: #34495e;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        .stat-card {
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        {% block css %}
+
+        {% endblock %}
+
+        .menu-group {
+            position: relative;
+        }
+
+        .menu-header {
+            padding: 12px 20px;
+            color: #b7c0cd;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-header:hover {
+            background: #34495e;
+            color: #fff;
+        }
+
+        .menu-header .toggle-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+
+        .sub-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .sub-menu li a {
+            padding: 10px 20px 10px 40px;
+            color: #8a94a5;
+            display: block;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .sub-menu li a:before {
+            content: "";
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: #8a94a5;
+            border-radius: 50%;
+        }
+
+        .sub-menu li a:hover {
+            background: #2c3e50;
+            color: #fff;
+            padding-left: 45px;
+        }
+
+        .sub-menu li a:hover:before {
+            background: #3498db;
+        }
+
+        /* 展开状态 */
+        .menu-group.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 根据实际内容高度调整 */
+        .menu-group.active .sub-menu {
+            max-height: 500px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+<!-- 侧边栏 -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h3 class="mb-0"><a style="text-decoration: none;color:inherit" href="{% url 'web:index' %}">CMDB</a></h3>
+        <small>资产管理系统</small>
+    </div>
+
+    {% sidebar_menu request %}
+
+</div>
+<!-- 主内容区 -->
+<div class="main-content">
+    {% breadcrumb request %}
+
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+<!-- Bootstrap 4 依赖 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+<script>
+    // 添加交互功能
+    $(document).ready(function () {
+        $('.menu-header').click(function () {
+            const parent = $(this).closest('.menu-group');
+            parent.toggleClass('active');
+            parent.siblings('.menu-group').removeClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>

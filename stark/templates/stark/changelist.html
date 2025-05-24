@@ -1,14 +1,19 @@
-{% extends 'stark/layout.html' %}
+{% extends 'layout.html' %}
 {% load stark_tags %}
 
 {% block content %}
     <div>
         {# 组合搜索 placeholder #}
-        {% for field_value_list in vo.combinatorial_search_field_data %}
-            {% for field_value in field_value_list %}
-                {{ field_value|safe }}
-            {% endfor %}
-        {% endfor %}
+        {% if vo.combinatorial_search_field_data %}
+            <ul style="border-radius: 4px" class="list-group">
+                {% for field_value_list in vo.combinatorial_search_field_data %}
+                    {% for field_value in field_value_list %}
+                        {{ field_value|safe }}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
 
 
         {# 新增按钮判断 #}

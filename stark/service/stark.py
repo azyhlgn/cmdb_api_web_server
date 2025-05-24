@@ -27,21 +27,20 @@ class Row(object):
             if data not in unique:
                 unique.add(data)
                 self.data_list.append(data)
-        print(self.data_list)
         self.option = option
         self.query_dict = query_dict
 
     def __iter__(self):
 
-        yield '<div>'
-        yield '<span>%s:</span>' % self.option.field_verbose_name
+        yield '''<li class="list-group-item"style="display: flex;align-items: center;justify-content:left">'''
+        yield '<span style="margin-right:5px">%s:</span>' % self.option.field_verbose_name
         qd = self.query_dict.copy()
         qd.mutable = True
         if self.option.field_name in qd:
             qd.pop(self.option.field_name)
-            yield '<a class="btn btn-light" href="?%s">全部</a>' % qd.urlencode()
+            yield '<a class="btn btn-light" href="?%s" style="margin-right:5px">全部</a>' % qd.urlencode()
         else:
-            yield '<a class="btn btn-info" href="?%s">全部</a>' % qd.urlencode()
+            yield '<a class="btn btn-info" href="?%s" style="margin-right:5px">全部</a>' % qd.urlencode()
 
         for data in self.data_list:
             qd = self.query_dict.copy()
@@ -49,7 +48,6 @@ class Row(object):
             if 'page' in qd:
                 qd.pop('page')
             qd_list = self.query_dict.getlist(self.option.field_name)
-            # print(data[0],qd_list)
             if str(data[0]) in qd_list:
                 if self.option.multi_select:
                     qd_list.remove(str(data[0]))
@@ -57,15 +55,15 @@ class Row(object):
                     qd.setlist(self.option.field_name, qd_list)
                 else:
                     qd.pop(self.option.field_name)
-                yield '<a class="btn btn-info" href="?%s">%s</a>' % (qd.urlencode(), data[1])
+                yield '<a class="btn btn-info" href="?%s" style="margin-right:5px">%s</a>' % (qd.urlencode(), data[1])
             else:
                 if self.option.multi_select:
                     qd_list.append(data[0])
                     qd.setlist(self.option.field_name, qd_list)
                 else:
                     qd[self.option.field_name] = data[0]
-                yield '<a class="btn btn-light" href="?%s">%s</a>' % (qd.urlencode(), data[1])
-        yield '</div>'
+                yield '<a class="btn btn-light" href="?%s" style="margin-right:5px">%s</a>' % (qd.urlencode(), data[1])
+        yield '</li>'
 
 
 class Option(object):
@@ -134,7 +132,6 @@ class ChangeListVO(object):
                     # todo
                     # 处理val为None的情况
                     if 'None' in val_list:
-                        print(val_list)
                         # 处理request.GET中某个字段的列表值中含有None 例如 [1,2,3,None]
                         # 需要构建搜索条件为 'my_field__in'=[1,2,3] or 'my_field__isnull'=True
                         has_none_q = Q()
@@ -144,12 +141,10 @@ class ChangeListVO(object):
                         # 从val中pop掉None值 若不为空 再使用 __in 构造搜索条件
                         val_list.remove('None')
                         if val_list:
-                            print('1111')
                             has_none_q.children.append(('%s__in' % option.field_name, val_list))
                         conn.children.append(has_none_q)
                     else:
                         conn.children.append(('%s__in' % option.field_name, val_list))
-            print(conn.children)
         self.queryset = self.queryset.filter(conn)
 
         # 处理分页并分割queryset数据
@@ -228,7 +223,7 @@ class StarkModelConfig(object):
         namespace = self.site.namespace
         app_label = self.model_cls._meta.app_label
         model_name = self.model_cls._meta.model_name
-        url = reverse('%s:%s_%s_change' % (namespace, app_label, model_name), args=(row.pk,))
+        url = reverse('%s:%s:%s_%s_change' % (namespace, model_name, app_label, model_name), args=(row.pk,))
         if not self.request.GET:
             return url
 
@@ -243,7 +238,7 @@ class StarkModelConfig(object):
         namespace = self.site.namespace
         app_label = self.model_cls._meta.app_label
         model_name = self.model_cls._meta.model_name
-        url = reverse('%s:%s_%s_delete' % (namespace, app_label, model_name), args=(row.pk,))
+        url = reverse('%s:%s:%s_%s_delete' % (namespace, model_name, app_label, model_name), args=(row.pk,))
 
         if not self.request.GET:
             return url
@@ -259,7 +254,7 @@ class StarkModelConfig(object):
         namespace = self.site.namespace
         app_label = self.model_cls._meta.app_label
         model_name = self.model_cls._meta.model_name
-        url = reverse('%s:%s_%s_add' % (namespace, app_label, model_name))
+        url = reverse('%s:%s:%s_%s_add' % (namespace, model_name, app_label, model_name))
 
         if not self.request.GET:
             return url
@@ -275,7 +270,7 @@ class StarkModelConfig(object):
         namespace = self.site.namespace
         app_label = self.model_cls._meta.app_label
         model_name = self.model_cls._meta.model_name
-        url = reverse('%s:%s_%s_changelist' % (namespace, app_label, model_name))
+        url = reverse('%s:%s:%s_%s_changelist' % (namespace, model_name, app_label, model_name))
         params = self.request.GET.urlencode()
         _filter = self.request.GET.get('_filter', '')
 
@@ -360,6 +355,7 @@ class StarkModelConfig(object):
         vo.combinatorial_search_field_data = combinatorial_search_field_data
         context = {
             'vo': vo,
+            'request': request,
         }
         return render(request, 'stark/changelist.html', context)
 
@@ -368,32 +364,33 @@ class StarkModelConfig(object):
         obj = self.model_cls.objects.filter(pk=pk).first()
         if request.method == 'GET':
             form_obj = self.get_change_form(instance=obj)
-            return render(request, 'stark/change.html', {'form_obj': form_obj})
+            return render(request, 'stark/change.html', {'form_obj': form_obj,'request': request})
 
         form_obj = self.get_change_form(request.POST, instance=obj)
         if form_obj.is_valid():
             form_obj.save()
             return redirect(self.get_reverse_changelist_url())
-        return render(request, 'stark/change.html', {'form_obj': form_obj})
+        return render(request, 'stark/change.html', {'form_obj': form_obj,'request': request})
 
     @csrf_exempt
     def add_views(self, request):
         if request.method == 'GET':
             form_obj = self.get_change_form()
-            return render(request, 'stark/change.html', {'form_obj': form_obj})
+            return render(request, 'stark/change.html', {'form_obj': form_obj,'request': request})
 
         form_obj = self.get_change_form(request.POST)
         if form_obj.is_valid():
             form_obj.save()
             return redirect(self.get_reverse_changelist_url())
-        return render(request, 'stark/change.html', {'form_obj': form_obj})
+        return render(request, 'stark/change.html', {'form_obj': form_obj,'request': request})
 
     def delete_views(self, request, pk=None):
         if request.method == 'GET':
             return render(request, 'stark/delete.html',
                           {
                               'pk': pk,
-                              'cancel_url': self.get_reverse_changelist_url()
+                              'cancel_url': self.get_reverse_changelist_url(),
+                              'request': request,
                           })
         self.model_cls.objects.filter(pk=pk).delete()
         return redirect(self.get_reverse_changelist_url())
@@ -417,7 +414,7 @@ class StarkModelConfig(object):
 
     @property
     def urls(self):
-        return self.get_urls(), None, None
+        return self.get_urls(), self.model_cls._meta.model_name, self.model_cls._meta.model_name
 
     def wrapper(self, func, *args, **kwargs):
         @functools.wraps(func)
@@ -439,9 +436,6 @@ class StarkAdminSite(object):
         if not stark_config_cls:
             stark_config_cls = StarkModelConfig
         self._registry[model_cls] = stark_config_cls(model_cls, self)
-
-        # for k, v in self._registry.items():
-        #     print(k, v)
 
     def get_urls(self):
         urlpatterns = []

@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from repository import models
-from API.lib.saver.saver import my_saver
+from api.lib.saver.saver import my_saver
 
 
 class Asset(APIView):

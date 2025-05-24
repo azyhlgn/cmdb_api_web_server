@@ -1,0 +1,135 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+    <form method="POST" style="margin: 10px;" action="?post_type=add">
+        {% csrf_token %}
+        {{ add_form_set.management_form }}
+        <div class="card">
+            <div class="card-header" style="display: flex;align-items: center;justify-content: space-between">
+                <h5 class="card-title" style="margin:0">新增权限列表</h5>
+                <span>注意：路由系统中新发现的不存于数据库中的路由。</span>
+                <button class="btn btn-success btn-xs" type="submit">提交新增</button>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th style="width: 220px;">url路径</th>
+                        <th style="width: 320px;">reverse名称</th>
+                        <th style="width: 120px;">url标题</th>
+                        <th style="width: 120px;">所属一级菜单</th>
+                        <th>是否是二级菜单</th>
+                        <th style="width: 120px">所属二级菜单</th>
+                    </tr>
+                    </thead>
+                    {% if add_form_set.errors %}
+                        {{ add_form_set.errors }}
+                    {% endif %}
+                    <tbody>
+                    {% for form in add_form_set %}
+                        <tr>
+                            {{ form.id }}
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ form.url_pattern }}</td>
+                            <td>{{ form.reverse_name }}</td>
+                            <td>{{ form.title }}</td>
+                            <td>{{ form.menu_name }}</td>
+                            <td>{{ form.is_changelist }}</td>
+                            <td>{{ form.parent_url_pattern }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <form method="post" style="margin: 10px" action="?post_type=del">
+        {% csrf_token %}
+        {{ del_form_set.management_form }}
+        <div class="card">
+            <div class="card-header" style="display: flex;align-items: center;justify-content: space-between">
+                <h5 class="card-title" style="margin:0">删除权限列表</h5>
+                <span>注意：路由系统中不存于但是存在于数据库中，需要删除的路由。</span>
+                <button class="btn btn-danger btn-xs" type="submit">提交删除</button>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th style="width: 220px;">url路径</th>
+                        <th style="width: 320px;">reverse名称</th>
+                        <th style="width: 120px;">url标题</th>
+                        <th style="width: 120px;">所属一级菜单</th>
+                        <th>是否是二级菜单</th>
+                        <th style="width: 120px">所属二级菜单</th>
+                    </tr>
+                    </thead>
+                    {% if del_form_set.errors %}
+                        {{ del_form_set.errors }}
+                    {% endif %}
+                    <tbody>
+                    {% for form in del_form_set %}
+                        <tr>
+                            {{ form.id }}
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ form.url_pattern }}</td>
+                            <td>{{ form.reverse_name }}</td>
+                            <td>{{ form.title }}</td>
+                            <td>{{ form.menu_name }}</td>
+                            <td>{{ form.is_changelist }}</td>
+                            <td>{{ form.parent_url_pattern }}</td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <form method="post" style="margin: 10px" action="?post_type=edit">
+        {% csrf_token %}
+        {{ edit_form_set.management_form }}
+        <div class="card">
+            <div class="card-header" style="display: flex;align-items: center;justify-content: space-between">
+                <h5 class="card-title" style="margin:0">编辑权限列表</h5>
+                <span>注意：数据库中存储的路由。</span>
+                <button class="btn btn-primary btn-xs">提交编辑</button>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th style="width: 220px;">url路径</th>
+                        <th style="width: 320px;">reverse名称</th>
+                        <th style="width: 120px;">url标题</th>
+                        <th style="width: 120px;">所属一级菜单</th>
+                        <th>是否是二级菜单</th>
+                        <th style="width: 120px">所属二级菜单</th>
+                    </tr>
+                    </thead>
+                    {% if edit_form_set.errors %}
+                        {{ edit_form_set.errors }}
+                    {% endif %}
+                    <tbody>
+                    {% for form in edit_form_set %}
+                        <tr>
+                            {{ form.id }}
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ form.url_pattern }}</td>
+                            <td>{{ form.reverse_name }}</td>
+                            <td>{{ form.title }}</td>
+                            <td>{{ form.menu_name }}</td>
+                            <td>{{ form.is_changelist }}</td>
+                            <td>{{ form.parent_url_pattern }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+{% endblock %}

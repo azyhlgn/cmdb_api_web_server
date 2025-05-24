@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% load rbac_tags %}
+
+{% block content %}
+    <div>
+        <div class="row">
+            <div class="col-sm-3">
+                {% userinfo_card request %}
+            </div>
+            <div class="col-sm-3">
+                {% role_card request %}
+            </div>
+            <div class="col-sm-6">
+                {% permission_card request %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

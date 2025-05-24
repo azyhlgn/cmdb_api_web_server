@@ -1,0 +1,19 @@
+{% for menu, s_menu in menu_dict.items %}
+    <div class="menu-group">
+        <div class="menu-header">
+            <i class="fas fa-folder-open mr-2"></i>
+            {{ menu }}
+            <i class="fas fa-angle-down toggle-icon"></i>
+        </div>
+        <ul class="sub-menu">
+            {% for item in s_menu %}
+                <li>
+                    <a href="/{{ item.1 }}">
+                        <i class="fas fa-circle-notch mr-2"></i>
+                        {{ item.0 }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endfor %}

@@ -1,0 +1,21 @@
+<form method="post" action="?{{ form_action }}" class="card">
+    {% csrf_token %}
+    <div class="card-header"
+         style="display: flex;align-items: center;justify-content: space-between">
+        <span class="card-title" style="margin:0">权限列表</span>
+        <span>
+            <button class="btn btn-success btn-sm" data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="点击角色，为他分配权限" type="submit">保存</button>
+            <a href="{% url 'rbac:permission_multi' %}"
+               class="btn btn-primary btn-sm">批量操作</a>
+        </span>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            {% for item in permission %}
+                {{ item|safe }}
+            {% endfor %}
+        </ul>
+    </div>
+</form>

@@ -1,0 +1,14 @@
+使用须知
+
+1. 需要清楚migrations下除去init以外的所有文件
+2. 在项目路由系统中注册rbac相关的路由
+    urlpatterns = [
+    ...,
+    path('rbac/', include(('rbac.urls', 'rbac'), namespace='rbac')),
+]
+3. 注册app
+    INSTALLED_APPS = [
+    ...,
+    'rbac.apps.RbacConfig',
+]
+4. 数据库迁移 makemigrations migrate

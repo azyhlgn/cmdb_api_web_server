@@ -1,5 +1,5 @@
 from django.urls import path
-from API import views as api_views
+from api import views as api_views
 
 
 

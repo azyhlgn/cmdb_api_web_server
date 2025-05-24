@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,10 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'API.apps.ApiConfig',
+    'api.apps.ApiConfig',
     'repository.apps.RepositoryConfig',
     'stark.apps.StarkConfig',
-    'stark.templatetags',
+    'rbac.apps.RbacConfig',
+    'web.apps.WebConfig',
 
     'rest_framework',
 ]
@@ -54,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'rbac.middleware.RBACMiddleware',
 ]
 
 ROOT_URLCONF = 'CMDB_API_WEB_Server.urls'
@@ -77,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'CMDB_API_WEB_Server.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -91,7 +91,6 @@ DATABASES = {
         'PASSWORD': '1y2m3tymtY',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -111,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -129,7 +127,6 @@ USE_I18N = True
 # DATETIME_FORMAT = 'Y-m-d H:i:s'
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

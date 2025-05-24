@@ -23,6 +23,7 @@ urlpatterns = [
     path('stark/', stark.site.urls),
 
 
-    path('api/', include(('API.urls', 'api'), namespace='api')),
-    path('web/', include(('WEB.urls', 'web'), namespace='web')),
+    path('api/', include(('api.urls', 'api'), namespace='api')),
+    path('rbac/', include(('rbac.urls', 'rbac'), namespace='rbac')),
+    path('web/', include(('web.urls', 'web'), namespace='web')),
 ]
