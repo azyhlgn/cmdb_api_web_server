@@ -129,7 +129,6 @@ class ChangeListVO(object):
             for option in self.config.combinatorial_search_field_list:
                 val_list = self.config.request.GET.getlist(option.field_name)
                 if val_list:
-                    # todo
                     # 处理val为None的情况
                     if 'None' in val_list:
                         # 处理request.GET中某个字段的列表值中含有None 例如 [1,2,3,None]

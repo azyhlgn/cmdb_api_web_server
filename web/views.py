@@ -1,11 +1,10 @@
 import json
-
 from django.shortcuts import render, redirect, reverse
 from django.views.decorators.csrf import csrf_exempt
-
 from repository import models
 from rbac.models import UserInfo
 from web import forms
+from api.lib.saver.sender import send_message_to_rabbit
 
 
 # Create your views here.
@@ -35,4 +34,11 @@ def login(request):
             print(request.session['userinfo'])
 
             return redirect(reverse('web:index'))
+
     return render(request, 'login.html')
+
+
+def update_resource(request):
+    send_message_to_rabbit()
+
+    return render(request, 'index.html', )
