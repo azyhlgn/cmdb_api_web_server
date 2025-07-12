@@ -4,13 +4,15 @@ from stark.service.stark import site
 from repository import models
 from stark.service.stark import StarkModelConfig, Option
 from django.urls import path, re_path
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, render
 from django.utils.safestring import mark_safe
 import functools
 from api.lib.conn_pool.redis_conn_pool import redis_pool
 import redis
 import pickle
 from hashlib import md5
+
+from repository.lib.data_excutor.data_excutor import get_name_value_form_field
 
 
 def xxxx(request):
@@ -34,14 +36,53 @@ class ServerConfig(StarkModelConfig):
         )
         print(self.redis_key_prefix)
 
+    def show_details(self, request, pk):
+        # 得到服务器信息
+        server = self.model_cls.objects.get(pk=pk)
+        server_field_name_list = [field.name for field in server._meta.fields]
+        server_value_list = []
+        for field_name in server_field_name_list:
+            server_value_list.append(getattr(server, field_name))
+        print(server_value_list)
+        server_data = {
+            'name': server_field_name_list,
+            'value': server_value_list,
+        }
+
+        # todo 得到服务器相关资源信息  disk memory nid
+        disk_qs = models.Disk.objects.filter(server=server)
+        disk_data = get_name_value_form_field(disk_qs, 'Disk','服务器硬盘信息')
+        memory_qs = models.Memory.objects.filter(server=server)
+        memory_data = get_name_value_form_field(memory_qs, 'Memory','服务器内存信息')
+        nic_qs = models.NIC.objects.filter(server=server)
+        nic_data = get_name_value_form_field(nic_qs, 'NIC','服务器网卡信息')
+
+        # 返回结果
+        content = {
+            'server_data': server_data,
+            'other_info': {
+                'disk_data': disk_data,
+                'memory_data': memory_data,
+                'nic_data': nic_data,
+            }
+        }
+        return render(request, 'show_details.html', content)
+
     def extra_urls(self):
         urlpatterns = [
             path('xxx/', xxxx),
             path('yyy/', yyyy),
+            re_path('(?P<pk>\d+)/', self.show_details),
         ]
         return urlpatterns
 
-    display_list = [StarkModelConfig.display_checkbox, 'sn', 'hostname', 'business_unit', 'device_status_id',
+    def display_detail(self, row=None, header=False):
+        if header:
+            return '查看详细信息'
+        return mark_safe('<a class="btn btn-primary" href="/stark/repository/server/%s/">查看</a>' % (row.id))
+
+    display_list = [StarkModelConfig.display_checkbox, display_detail, 'sn', 'hostname', 'business_unit',
+                    'device_status_id',
                     StarkModelConfig.display_edit_delete]
     multi_action_list = [StarkModelConfig.mulit_delete, StarkModelConfig.mulit_init]
     search_field_list = ['business_unit__name', 'sn']

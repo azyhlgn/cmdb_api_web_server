@@ -22,7 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('stark/', stark.site.urls),
 
-
     path('api/', include(('api.urls', 'api'), namespace='api')),
     path('rbac/', include(('rbac.urls', 'rbac'), namespace='rbac')),
     path('web/', include(('web.urls', 'web'), namespace='web')),
